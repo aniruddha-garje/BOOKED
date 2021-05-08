@@ -51,22 +51,15 @@ public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
 
     Button Book;
-    Button sign_out;
 
-    //ListView list;
-    //FirebaseAuth mAuth;
-    //DatabaseReference reference;
-    EditText rid, rpassword;
-    //private ListView mMessageListView;
-    TextView txt;
+
 
     private StorageReference mStorageRef;
-    //mStorageRef = FirebaseStorage.getInstance().getReference();
      ListView mMessageListView;
     private FirebaseDatabase mFirebaseDatabase;
-
-     MessageAdapter mMessageAdapter;
     private DatabaseReference mMessagesDatabaseReference;
+     MessageAdapter mMessageAdapter;
+
      ChildEventListener mChildEventListener;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -87,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
-
-        ArrayList<DateData> dates=new ArrayList<>();
 
         Book = (Button) findViewById(R.id.button8);
         mMessageListView = findViewById(R.id.list);

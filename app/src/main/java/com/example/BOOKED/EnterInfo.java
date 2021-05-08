@@ -46,10 +46,9 @@ import static android.widget.Toast.LENGTH_SHORT;
 public class EnterInfo extends AppCompatActivity {
 
     private static final String TAG = " ";
-    Button submit,decoy;
+    Button submit;
     ImageButton pdf;
-    private MessageAdapter mMessageAdapter;
-    private ListView mMessageListView;
+
     private TextView rdate,rtime,txt,docu;
 
 
@@ -99,8 +98,7 @@ public class EnterInfo extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mMessagesDatabaseReference = mFirebaseDatabase.getReference("Bookings");
 
-        mFirebaseStorage = FirebaseStorage.getInstance();
-        mpdfStorageReference = mFirebaseStorage.getReference().child("doc");
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -209,7 +207,6 @@ public class EnterInfo extends AppCompatActivity {
                  email = user.getEmail();
                  phone = user.getPhoneNumber();
 
-                 Log.d("firebase", String.valueOf(email));
                 // String email = remail.getText().toString();
                 //  String phone = rphone.getText().toString();
                 String org = rorg.getText().toString();
@@ -219,7 +216,6 @@ public class EnterInfo extends AppCompatActivity {
                 //String time = rtime.getText().toString();
 
                 String approv = "Not Approved❌";
-                flag=1;
                 String logo = mMessagesDatabaseReference.push().getKey();
                 ani = logo;
                 Info dota = new Info(email, " ", org, purp, hall, date, tim, approv,pop);
