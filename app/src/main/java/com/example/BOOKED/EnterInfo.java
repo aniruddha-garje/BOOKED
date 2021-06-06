@@ -1,8 +1,12 @@
 package com.example.BOOKED;
 
+import com.budiyev.android.codescanner.CodeScanner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 //import android.support.v7.app.AppCompatActivity;
@@ -12,8 +16,12 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.ProgressBar;
-
+import com.example.BOOKED.data.Result;
+import com.budiyev.android.codescanner.DecodeCallback;
+import com.budiyev.android.codescanner.CodeScannerView;
 import java.util.Calendar;
+
+import bolts.Capture;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -39,6 +47,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -47,7 +57,8 @@ public class EnterInfo extends AppCompatActivity {
 
     private static final String TAG = " ";
     Button submit;
-    ImageButton pdf;
+    ImageButton pdf,scan;
+    //View scanner_view;
 
     private TextView rdate,rtime,txt,docu;
 
@@ -60,7 +71,7 @@ public class EnterInfo extends AppCompatActivity {
     sun.bob.mcalendarview.MCalendarView calendarView;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mpdfStorageReference;
-
+    private CodeScanner mCodeScanner;
     private static final int RC_PDF_PICKER = 2;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private ProgressBar progressBar;
@@ -109,7 +120,7 @@ public class EnterInfo extends AppCompatActivity {
 
         pdf = (ImageButton) findViewById(R.id.imageButton);
         submit = (Button) findViewById(R.id.button2);
-
+        scan = (ImageButton) findViewById(R.id.imageButton2);
 
         rorg = (EditText) findViewById(R.id.editTextTextPersonName5);
         rpurp = (EditText) findViewById(R.id.editTextTextPersonName7);
@@ -118,14 +129,19 @@ public class EnterInfo extends AppCompatActivity {
         rtime = (TextView) findViewById(R.id.editTextTime);
 
 
-
         int i = 1;
-        pdf.setOnClickListener(new View.OnClickListener() {
+        scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showToast("Response Submitted");
+                IntentIntegrator intentIntegrator = new IntentIntegrator( EnterInfo.this);
+                intentIntegrator.setBeepEnabled(true);
+                intentIntegrator.setOrientationLocked(true);
+                intentIntegrator.setCaptureActivity(Capture.class);
+                intentIntegrator.initiateScan();
             }
         });
+
+
 
         pdf.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,9 +267,32 @@ public class EnterInfo extends AppCompatActivity {
 
     }
 
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(
+                requestCode, resultCode,data );
+
+    if(intentResult.getContents()!= null){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EnterInfo.this);
+        builder.setTitle("Result");
+        builder.setMessage(intentResult.getContents());
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+
+    }else{
+        Toast.makeText(getApplicationContext(),"QR not Found",Toast.LENGTH_LONG).show();
+    }
 
         if (requestCode == RC_PDF_PICKER && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
