@@ -130,16 +130,7 @@ public class EnterInfo extends AppCompatActivity {
 
 
         int i = 1;
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator( EnterInfo.this);
-                intentIntegrator.setBeepEnabled(true);
-                intentIntegrator.setOrientationLocked(true);
-                intentIntegrator.setCaptureActivity(Capture.class);
-                intentIntegrator.initiateScan();
-            }
-        });
+
 
 
 
@@ -277,22 +268,6 @@ public class EnterInfo extends AppCompatActivity {
 
         IntentResult intentResult = IntentIntegrator.parseActivityResult(
                 requestCode, resultCode,data );
-
-    if(intentResult.getContents()!= null){
-        AlertDialog.Builder builder = new AlertDialog.Builder(EnterInfo.this);
-        builder.setTitle("Result");
-        builder.setMessage(intentResult.getContents());
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-
-    }else{
-        Toast.makeText(getApplicationContext(),"QR not Found",Toast.LENGTH_LONG).show();
-    }
 
         if (requestCode == RC_PDF_PICKER && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
