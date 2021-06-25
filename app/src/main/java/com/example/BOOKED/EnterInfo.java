@@ -120,7 +120,7 @@ public class EnterInfo extends AppCompatActivity {
 
         pdf = (ImageButton) findViewById(R.id.imageButton);
         submit = (Button) findViewById(R.id.button2);
-        scan = (ImageButton) findViewById(R.id.imageButton2);
+
 
         rorg = (EditText) findViewById(R.id.editTextTextPersonName5);
         rpurp = (EditText) findViewById(R.id.editTextTextPersonName7);
